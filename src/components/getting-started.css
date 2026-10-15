@@ -1,0 +1,62 @@
+.guide-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.guide-button:hover { background: var(--surface-soft); color: var(--ink); }
+.getting-started-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.getting-started-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.guide-kicker { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: .8px; }
+.getting-started-header h2 { margin: 7px 0 4px; font-size: 17px; line-height: 1.3; font-weight: 750; }
+.getting-started-header p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.guide-hide-button { flex-shrink: 0; min-height: 34px; }
+.getting-started-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; padding: 0; list-style: none; }
+.getting-started-steps > li { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-content: start; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); }
+.guide-step-number { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--ink); font-size: 11px; font-weight: 750; }
+.getting-started-steps strong { display: block; margin: 3px 0 6px; font-size: 11px; line-height: 1.4; }
+.getting-started-steps small { display: block; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.guide-step-actions { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; }
+.guide-step-actions a, .getting-started-footer a { display: inline-flex; align-items: center; gap: 4px; min-height: 28px; color: var(--red); font-size: 10px; font-weight: 700; }
+.guide-step-actions a:hover, .getting-started-footer a:hover { text-decoration: underline; }
+.getting-started-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font-size: 10px; line-height: 1.6; }
+.getting-started-footer > span { display: flex; align-items: flex-start; gap: 7px; }
+.getting-started-footer > span > svg { margin-top: 1px; flex-shrink: 0; }
+.guide-dialog-content { display: grid; gap: 16px; max-height: 65vh; overflow-y: auto; padding: 0 3px 3px 0; }
+.full-guide-steps { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+.full-guide-steps > li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; }
+.full-guide-steps > li > span { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); color: var(--ink); font-size: 12px; font-weight: 750; }
+.full-guide-steps strong { display: block; margin: 5px 0 5px; font-size: 12px; line-height: 1.5; }
+.full-guide-steps p, .guide-approval-note p, .guide-local-note p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.guide-approval-note, .guide-local-note { display: flex; align-items: flex-start; gap: 10px; padding: 13px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); }
+.guide-approval-note > svg, .guide-local-note > svg { flex-shrink: 0; margin-top: 2px; color: var(--muted); }
+.guide-approval-note strong { display: block; margin-bottom: 4px; font-size: 12px; }
+.guide-dialog-content .guide-dialog-actions { position: static; margin-top: 0; flex-wrap: wrap; justify-content: flex-start; }
+@media (max-width: 1100px) {
+  .getting-started-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .guide-button, .guide-hide-button { min-height: 40px; }
+  .getting-started-card { padding: 14px; }
+  .getting-started-header { flex-wrap: wrap; gap: 6px; }
+  .getting-started-steps { grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 12px 0; }
+  .getting-started-steps > li { padding: 10px; }
+  .guide-step-actions a, .getting-started-footer a { min-height: 36px; }
+  .guide-dialog-content { max-height: calc(100dvh - 135px); }
+  .guide-dialog-actions .button { height: auto; min-height: 40px; white-space: normal; }
+}

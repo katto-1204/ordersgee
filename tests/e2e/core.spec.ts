@@ -1,0 +1,71 @@
+import { expect, mockupPng, test } from './fixtures'
+
+test('opens the Gee Graphics dashboard with seeded production work', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('heading', { name: 'Good morning, Boss.' })).toBeVisible()
+  await expect(page.getByText('ACD', { exact: true }).first()).toBeVisible()
+  await expect(page.getByRole('link', { name: /Production Board/ })).toBeAttached()
+})
+
+test('creates and completes a task from the tasks page', async ({ page }) => {
+  await page.goto('/tasks')
+  await page.getByRole('button', { name: 'New task' }).click()
+  await page.getByLabel('Task title').fill('Pack the SSDK sample')
+  await page.getByRole('button', { name: 'Create task' }).click()
+  const task = page.getByText('Pack the SSDK sample', { exact: true }).first()
+  await expect(task).toBeVisible()
+  await page.getByRole('button', { name: 'Complete Pack the SSDK sample' }).click()
+  await expect(page.getByRole('heading', { name: 'COMPLETED', exact: true })).toBeVisible()
+})
+
+test('shows the production board and allows moving an order through the stage selector', async ({ page }) => {
+  await page.goto('/production')
+  await expect(page.getByRole('heading', { name: 'Production board' })).toBeVisible()
+  const order = page.getByText('BLUEPHOENIX DARYL').first()
+  await expect(order).toBeVisible()
+  const stage = page.getByLabel(/Move BLUEPHOENIX DARYL using button alternative/)
+  await expect(stage).toBeVisible()
+  await stage.selectOption('done-print')
+  await page.getByRole('button', { name: 'Continue and log override' }).click()
+  await expect(stage).toHaveValue('done-print')
+  await page.reload()
+  await expect(stage).toHaveValue('done-print')
+})
+
+test('previews and imports a multiline production list', async ({ page }) => {
+  await page.goto('/orders?capture=1')
+  await expect(page.getByRole('heading', { name: 'Quick Capture' })).toBeVisible()
+  await page.getByLabel('Paste production task lines').fill('MAVEN CLUB - TO PRINT\nRIVERSIDE TEAM - TO SEW')
+  await page.getByRole('button', { name: 'Preview lines' }).click()
+  await expect(page.getByText('2 lines found')).toBeVisible()
+  await page.getByRole('button', { name: 'Add 2 to production' }).click()
+  await expect(page.getByText('MAVEN CLUB', { exact: true })).toBeVisible()
+  await expect(page.getByText('RIVERSIDE TEAM', { exact: true })).toBeVisible()
+})
+
+test('persists a new task while the browser is offline', async ({ page, context }) => {
+  await page.goto('/tasks')
+  await expect(page.getByRole('button', { name: 'New task' })).toBeVisible()
+  await context.setOffline(true)
+  await page.getByRole('button', { name: 'New task' }).click()
+  await page.getByLabel('Task title').fill('Prepare offline packing slip')
+  await page.getByRole('button', { name: 'Create task' }).click()
+  await expect(page.getByText('Prepare offline packing slip', { exact: true })).toBeVisible()
+  await context.setOffline(false)
+})
+
+test('autosaves a note to localStorage and reloads it', async ({ page }) => {
+  await page.goto('/notes')
+  await page.getByRole('button', { name: 'New note' }).click()
+  await page.getByPlaceholder('Untitled note').fill('Production reminder')
+  await page.locator('#note-editor').fill('Confirm the artwork before pressing.')
+  await page.locator('.note-attachments input[type="file"]').setInputFiles({ name: 'note-design.png', mimeType: 'image/png', buffer: mockupPng })
+  await expect(page.getByText('Saved in this browser', { exact: true })).toBeVisible()
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('gee-tasks-workspace-v1'))).toContain('Confirm the artwork before pressing.')
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('gee-tasks-workspace-v1'))).toContain('note-design.jpg')
+  await page.reload()
+  await expect(page.getByText('Production reminder', { exact: true })).toBeVisible()
+  await expect(page.getByText('Confirm the artwork before pressing.', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: /General Production reminder/ }).click()
+  await expect(page.getByRole('link', { name: 'note-design.jpg', exact: true })).toHaveAttribute('href', /^data:image\/jpeg;base64,/)
+})
