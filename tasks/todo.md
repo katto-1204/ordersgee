@@ -48,7 +48,9 @@ Correction review: the GettingStarted components had no matching stylesheet, inc
 - [x] Verify the exact workspace and requested remote; initialize a standalone project repository.
 - [x] Configure Vite, pinned pnpm install, production build/output, Node 22.x and SPA deep-link fallback for Vercel; document Google configuration and origin-specific data migration.
 - [x] Verify frozen lockfile compatibility, tests and production build; check publication excludes for generated files and environment data.
-- [ ] Commit as `first commit`, set `main`, add the supplied origin and push without rewriting remote history.
-- [ ] Verify the remote branch matches the local commit and record handoff results.
+- [x] Commit as `first commit`, set `main`, add the supplied origin and push without rewriting remote history.
+- [x] Verify the remote branch matches the local commit and record handoff results.
 
 Publication preparation: the pinned pnpm 11.25.0 accepted `install --lockfile-only --frozen-lockfile --ignore-scripts`; all 48 unit tests passed and the TypeScript/Vite/PWA production build passed. Local checks ran under Node 24.13.0; Vercel is pinned to Node 22.x. No secrets or private keys were found by the targeted filename-only source scan. The environment files, dependency directory, build output and Vercel account metadata are excluded. Staged-file review and commit/push verification follow below. A live Vercel deployment itself is not claimed.
+
+Publication result: reviewed all 85 staged project files and `git diff --cached --check` passed. Created initial commit `4f01a40` (`first commit`), renamed the branch to `main`, and configured `origin` exactly as `https://github.com/katto-1204/ordersgee.git`. A normal push created `main` and set its upstream to `origin/main`. A remote `ls-remote` check returned the same full initial commit hash as local HEAD, and the working tree was clean. This documentation update records the successful handoff without changing application code. Import the repository in Vercel to create the actual deployment; Google authorization still requires the configured client/account and deployed origin.
